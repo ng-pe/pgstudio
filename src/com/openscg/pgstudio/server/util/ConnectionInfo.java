@@ -176,15 +176,23 @@ public class ConnectionInfo {
 	}
 	
 	public static String remoteAddr(HttpServletRequest request) {
+
 		String remoteAddr = request.getRemoteAddr();
 		String forwarded;
-		if ((forwarded = request.getHeader(HEADER_X_FORWARDED_FOR)) != null) {
+		if ((forwarded = request.getHeader("X-FORWARDED-FOR")) != null) {
 			remoteAddr = forwarded;
 			int idx = remoteAddr.indexOf(',');
 			if (idx > -1) {
 				remoteAddr = remoteAddr.substring(0, idx);
 			}
+			int idx2 = remoteAddr.indexOf(':');
+			if (idx2 > -1) {
+				remoteAddr = remoteAddr.substring(0, idx2);
+			}
+
 		}
+
+
 		return remoteAddr;
 	}
 
